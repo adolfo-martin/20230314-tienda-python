@@ -1,3 +1,5 @@
+# pip3 install mariadb
+
 import mariadb
 import sys
 
@@ -28,7 +30,7 @@ for (nombre, precio) in cur:
 
 cur.execute(
     "INSERT INTO producto (codigo, nombre, precio, codigo_fabricante) VALUES (?, ?, ?, ?)",
-    (12, 'AMD RX 6700XT', 459, 7))
+    (13, 'AMD RX 6700XT', 459, 7))
 
 cur.execute(
     "SELECT nombre, precio FROM producto WHERE nombre=?",
