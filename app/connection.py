@@ -1,23 +1,22 @@
-# pip3 install mariadb
+# pip3 install mysql-connector-python
 
-import mariadb
+# https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
+
+import mysql.connector
 import sys
 
-# Connect to MariaDB Platform
 try:
-    conn = mariadb.connect(
-        user="root",
-        password="Hola1234",
-        host="127.0.0.1",
-        port=3306,
-        database="tienda"
-
+    conn = mysql.connector.connect(
+        user = "adolfo",
+        password = "Hola1234",
+        host = "10.0.0.2",
+        port = 3306,
+        database = "tienda"
     )
-except mariadb.Error as e:
+except mysql.connector.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
     sys.exit(1)
 
-# Get Cursor
 cur = conn.cursor()
 
 cur.execute("SELECT nombre, precio FROM producto")
@@ -27,16 +26,3 @@ print(f"---------------------------------------- ----------")
 
 for (nombre, precio) in cur:
     print(f"{nombre:40} {precio:10}")
-
-cur.execute(
-    "INSERT INTO producto (codigo, nombre, precio, codigo_fabricante) VALUES (?, ?, ?, ?)",
-    (13, 'AMD RX 6700XT', 459, 7))
-
-cur.execute(
-    "SELECT nombre, precio FROM producto WHERE nombre=?",
-    ('AMD RX 6700XT',)
-)
-
-print()
-for (nombre, precio) in cur:
-    print(f"Nombre: {nombre}, Precio: {precio}")

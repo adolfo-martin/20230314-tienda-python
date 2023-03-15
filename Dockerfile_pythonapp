@@ -1,0 +1,21 @@
+# https://medium.com/swlh/how-to-connect-to-mysql-docker-from-python-application-on-macos-mojave-32c7834e5afa
+
+FROM python:bullseye
+
+RUN mkdir /opt/app
+WORKDIR /opt/app
+
+COPY ./app .
+
+RUN apt update
+RUN apt upgrade -y
+
+
+RUN pip install --upgrade pip
+RUN pip3 install mysql-connector-python
+
+CMD ["python3", "./connection.py"]
+
+
+# docker build -t pythonapp_tienda:0.7 -f ./Dockerfile_pythonapp .
+# docker run -d --name pythonapp_tienda pythonapp_tienda:0.7

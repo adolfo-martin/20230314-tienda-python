@@ -1,0 +1,43 @@
+version: "3.1"
+
+networks:
+  tienda_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
+
+services:
+  database:
+    container_name: mysql_tienda
+    image: mysql:8.0.32
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: Hola1234
+      MYSQL_DATABASE: tienda
+      MYSQL_USER: adolfo
+      MYSQL_PASSWORD: Hola1234
+    volumes:
+      - ./tienda.sql:/docker-entrypoint-initdb.d/tienda.sql
+    hostname: database_server
+    networks:
+      tienda_net:
+        ipv4_address: 10.0.0.2
+
+  app:
+    build:
+      dockerfile: Dockerfile_pythonapp
+    container_name: tienda_pythonapp
+    restart: always
+    ports:
+      - "8082:8082"
+    depends_on:
+      - database
+    hostname: app_server
+    networks:
+      tienda_net:
+        ipv4_address: 10.0.0.3

@@ -1,0 +1,8 @@
+FROM mysql:8.0.32
+ENV MYSQL_ROOT_PASSWORD Hola1234
+ADD ./tienda.sql /docker-entrypoint-initdb.d
+EXPOSE 3306
+
+# docker build -t mysql_tienda:1.0 -f ./Dockerfile_mysql .
+# docker run -d --name mysql_tienda --publish 3306:3306 mysql_tienda:1.0
+# docker exec -it mysql_tienda mysql -u root -p tienda
