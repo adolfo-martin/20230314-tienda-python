@@ -32,7 +32,7 @@ services:
     build:
       dockerfile: Dockerfile_pythonapp
     container_name: tienda_pythonapp
-    restart: always
+    # restart: always
     ports:
       - "8082:8082"
     depends_on:
