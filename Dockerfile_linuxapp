@@ -1,18 +1,22 @@
-FROM python:3.10.10
+FROM python:3.10.10-bullseye
 
 RUN mkdir /opt/app
 WORKDIR /opt/app
 
 COPY ./app .
 
-RUN apt update
+# RUN apt update
 # RUN apt upgrade -y
-RUN apt install libmariadb3 libmariadb-dev
 
-RUN pip install --upgrade pip
+RUN wget -c http://ftp.us.debian.org/debian/pool/main/l/leptonlib/libleptonica-dev_1.82.0-3+b2_amd64.deb
+RUN apt install ./libleptonica-dev_1.82.0-3+b2_amd64.deb
+
+RUN apt install -yq libmariadb3 libmariadb-dev
+
+# RUN pip install --upgrade pip
 RUN pip3 install mariadb
 
 CMD ["python3", "./connection.py"]
 
-# docker build -t linuxapp_tienda:0.4 -f ./Dockerfile_linuxapp .
-# docker run -d --name linuxapp_tienda linuxapp_tienda:0.4
+# docker build -t linuxapp_tienda:0.5 -f ./Dockerfile_linuxapp .
+# docker run -d --name linuxapp_tienda linuxapp_tienda:0.5
