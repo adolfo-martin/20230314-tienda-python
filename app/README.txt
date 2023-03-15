@@ -1,3 +1,4 @@
-pip3 install mariadb
+# pip3 install mysql-connector-python
+# pip3 install mariadb
 
-MAL pip3 install mariadb-connector-python
+# https://dev.mysql.com/doc/connector-python/en/connector-python-example-connecting.html
