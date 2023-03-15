@@ -11,30 +11,38 @@ class StoreRepository:
     def __init__(self, config: Config):
         self.config = config
 
-    def __create_connection(self):
-            self.connection = mysql.connector.connect(
-                user = self.config.user,
-                password = self.config.password,
-                host = self.config.host,
-                port = self.config.port,
-                database = self.config.database
-            )
+    def __create_connection(self):  
+        connection = mysql.connector.connect(
+            user = self.config.user,
+            password = self.config.password,
+            host = self.config.host,
+            port = self.config.port,
+            database = self.config.database,
+        )
+        return connection
 
     def retrieve_products(self) -> list[Product]: 
         try:
-            connection = self.create_connection(self.config)
+            connection = self.__create_connection()
         except mysql.connector.Error as error:
             message = f"Error connecting to database {self.config.database}: {error}"
             raise StoreRepositoryError(message)
 
-        cursor = connection.cursor()
-        cursor.execute("SELECT nombre, precio FROM producto")
+        try:
+            cursor = connection.cursor()
+            cursor.execute("SELECT codig, nombre, precio FROM producto")
 
-        print(f"{'  Nombre':40} {'  Precio':10}")
-        print(f"---------------------------------------- ----------")
+            products: list[Product] = []
+            for (codigo, nombre, precio) in cursor:
+                products.append(Product(codigo, nombre, precio))
 
-        for (nombre, precio) in cursor:
-            print(f"{nombre:40} {precio:10}")
+            cursor.close()
+            return products
+        except Exception as error:
+            message = f"Error connecting to database {self.config.database}"
+            raise StoreRepositoryError(message)
+        finally:
+            connection.close()
 
 
 @dataclass 
